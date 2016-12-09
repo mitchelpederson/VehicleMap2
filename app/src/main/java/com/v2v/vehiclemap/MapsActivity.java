@@ -1,5 +1,6 @@
 package com.v2v.vehiclemap;
 
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -16,6 +17,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    Handler handler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +28,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+// Start the initial runnable task by posting through the handler
+        handler.post(runnableCode);
     }
 
+    private Runnable runnableCode = new Runnable() {
+        @Override
+        public void run() {
+            // Do something here on the main thread
+            lat += 0.00004;
+            dot.setPosition(new LatLng(lat, lang));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat, lang)));
+            // Repeat this the same runnable code block again another 2 seconds
+            handler.postDelayed(runnableCode, 33);
+        }
+    };
+
+    GroundOverlay dot;
+    float lat, lang;
 
     /**
      * Manipulates the map once available.
@@ -42,9 +63,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng dallas = new LatLng(32.77, -96.80);
+        lat = 32.77f;
+        lang = -96.80f;
+        LatLng dallas = new LatLng(lat, lang);
 
-        mMap.addGroundOverlay(new GroundOverlayOptions()
+        dot = mMap.addGroundOverlay(new GroundOverlayOptions()
                 .image(BitmapDescriptorFactory.fromResource(R.drawable.dot))
                 .position(dallas, 10.f));
 
@@ -53,4 +76,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(dallas));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(18.0f));
     }
+
 }
