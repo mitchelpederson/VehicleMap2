@@ -1,9 +1,14 @@
 package com.v2v.vehiclemap;
 
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -14,37 +19,30 @@ import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
     private GoogleMap mMap;
-    Handler handler = new Handler();
+    private LocationManager locationManager;
+
+    final private String[] PERMISSIONS = {
+            Manifest.permission.ACCESS_FINE_LOCATION
+    };
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-// Start the initial runnable task by posting through the handler
-        handler.post(runnableCode);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1.f, (LocationListener) this);
     }
-
-    private Runnable runnableCode = new Runnable() {
-        @Override
-        public void run() {
-            // Do something here on the main thread
-            lat += 0.00004;
-            dot.setPosition(new LatLng(lat, lang));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat, lang)));
-            // Repeat this the same runnable code block again another 2 seconds
-            handler.postDelayed(runnableCode, 33);
-        }
-    };
 
     GroundOverlay dot;
     float lat, lang;
@@ -65,16 +63,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         lat = 32.77f;
         lang = -96.80f;
-        LatLng dallas = new LatLng(lat, lang);
+        pos = new LatLng(lat, lang);
 
         dot = mMap.addGroundOverlay(new GroundOverlayOptions()
                 .image(BitmapDescriptorFactory.fromResource(R.drawable.dot))
-                .position(dallas, 10.f));
+                .position(pos, 20.f));
 
-
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(dallas));
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(18.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(17.0f));
     }
 
+    LatLng pos;
+
+    public void onLocationChanged(Location location) {
+
+        pos = new LatLng(location.getLatitude(), location.getLongitude());
+
+        dot.setPosition(pos);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(pos));
+
+    }
+
+    public void onProviderEnabled(String s) {
+
+    }
+
+    public void onProviderDisabled(String s) {
+
+    }
+
+    public void onStatusChanged(String s, int i, Bundle b) {
+
+    }
 }
