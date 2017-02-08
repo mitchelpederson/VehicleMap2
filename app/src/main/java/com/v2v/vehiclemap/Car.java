@@ -1,5 +1,8 @@
 package com.v2v.vehiclemap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public final class Car {
     public String id;
     public double lat;
@@ -21,5 +24,13 @@ public final class Car {
         this.lon = l2;
         this.speed = s;
         this.bearing = b;
+    }
+
+    public Car(JSONObject obj) throws JSONException {
+        this.id = obj.getString("given_id");
+        this.lat = obj.getDouble("lat");
+        this.lon = obj.getDouble("long");
+        this.speed = obj.getDouble("speed");
+        this.bearing = obj.getDouble("bearing");
     }
 }

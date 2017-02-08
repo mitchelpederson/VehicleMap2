@@ -5,16 +5,21 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import java.util.ArrayList;
 
-import com.v2v.vehiclemap.Car;
+import java.util.ArrayList;
 
 public final class CarDatabase extends SQLiteOpenHelper {
     public static final int DB_VERS = 1;
     public static final String DB_NAME = "CarDB";
+    private static CarDatabase sInstance = null;
 
-    public CarDatabase(Context context) {
+    private CarDatabase(Context context) {
         super(context, DB_NAME, null, DB_VERS);
+    }
+
+    public static synchronized CarDatabase getInstance(Context context) {
+        if (sInstance == null) sInstance = new CarDatabase(context.getApplicationContext());
+        return sInstance;
     }
 
     @Override
