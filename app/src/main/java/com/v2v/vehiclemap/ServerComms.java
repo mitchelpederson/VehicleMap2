@@ -26,8 +26,21 @@ public class ServerComms {
         return null;
     }
 
-    public static void sendLocation(Car c) {
+    public static void sendLocation(Car c) throws JSONException {
         // send POST req with payload { given_id, lat, long, speed, bearing } (everything optional)
         // request returns the current car's DB entry
+
+        CarPoster dataPost = new CarPoster();
+        JSONArray jsonarray = dataPost.doInBackground(); // gets json array
+
+        for (int i = 0; i < jsonarray.length(); i++) {
+            JSONObject jsonobject = jsonarray.getJSONObject(i);
+            String given_id = jsonobject.getString("given_id");
+            String lat = jsonobject.getString("lat");
+            String lng = jsonobject.getString("long");
+            String speed = jsonobject.getString("speed");
+            String bearing = jsonobject.getString("bearing");
+        }
+
     }
 }
