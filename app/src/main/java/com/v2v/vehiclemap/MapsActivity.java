@@ -1,5 +1,6 @@
 package com.v2v.vehiclemap;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -7,6 +8,7 @@ import android.location.LocationManager;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.app.FragmentTransaction;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -41,7 +43,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1.f, (LocationListener) this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1.f, this);
+
+        /*FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        OverlayFragment overlayFragment = new OverlayFragment();
+        fragmentTransaction.add(overlayFragment, "overlay_frag");
+        fragmentTransaction.commit();*/
+
+
     }
 
     GroundOverlay dot;
