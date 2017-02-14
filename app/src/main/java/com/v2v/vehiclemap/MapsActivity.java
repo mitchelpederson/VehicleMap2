@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
-
     final private String[] PERMISSIONS = {
             Manifest.permission.ACCESS_FINE_LOCATION
     };
@@ -49,7 +48,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         android_id = Secure.getString(this.getContentResolver(), Secure.ANDROID_ID);
 
         this.carDatabase = CarDatabase.getInstance(this);
-        if(this.carDatabase.getAllCars().isEmpty()) this.carDatabase.seedData();
 
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -182,7 +180,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             new CarGetter().execute();
                         }
                     },
-                    3000
+                    1000
             );
         }
     }

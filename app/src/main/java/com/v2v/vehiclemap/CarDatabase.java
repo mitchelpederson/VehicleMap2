@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 public final class CarDatabase extends SQLiteOpenHelper {
-    public static final int DB_VERS = 1;
+    public static final int DB_VERS = 2;
     public static final String DB_NAME = "CarDB";
     private static CarDatabase sInstance = null;
 
@@ -31,12 +31,6 @@ public final class CarDatabase extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int old_vers, int new_vers) {
         db.execSQL("DROP TABLE IF EXISTS cars");
         this.onCreate(db);
-    }
-
-    public void seedData() {
-        updateCar(new Car("first", 32.842723, -96.782781, 0, 0));
-        updateCar(new Car("second", 32.842720, -96.781963, 0, 0));
-        updateCar(new Car("third", 32.8428, -96.781963, 0, 0));
     }
 
     public void updateCar(Car c) {
