@@ -114,6 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void redrawMapMarkers() {
         ArrayList<Car> cars = carDatabase.getAllCars();
         Set<String> oldCars = new ArraySet<>();
+        for(String carid: otherCarDots.keySet()) oldCars.add(carid);
 
         // add other cars
         for (Car car : cars) {
@@ -190,6 +191,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         private String url = "http://conradhappeliv.com:1337/update/";
 
         @Override
+        protected void onPreExecute() {
+            Log.d(TAG, "Starting CarPoster");
+        }
+
+        @Override
         protected Void doInBackground(Car... param) {
             HttpHandler sh = new HttpHandler();
 
@@ -205,6 +211,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             String jsonStr = sh.POST(url, params);
             Log.e(TAG, "Response from url: " + jsonStr);
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void res) {
+            Log.d(TAG, "Ending CarPoster");
         }
     }
 }
