@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 public class OverlayFragment extends Fragment {
 
-    OverlaySurface surface;
+    private OverlaySurface surface;
 
     public OverlayFragment() {}
 
@@ -27,6 +27,13 @@ public class OverlayFragment extends Fragment {
         return inflater.inflate(R.layout.overlay_fragment, container, false);
 
     }
+
+    @Override
+    public void onStop () {
+        surface.signalThreadEnd();
+        super.onStop();
+    }
+
 
 
 }
