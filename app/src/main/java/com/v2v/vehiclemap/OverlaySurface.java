@@ -30,8 +30,11 @@ public class OverlaySurface extends SurfaceView implements SurfaceHolder.Callbac
 
     private Random random;
 
+    private SpriteManager spriteManager;
+
     int bmpX;
     int bmpY;
+
 
     public OverlaySurface(Context context) {
         super(context);
@@ -43,13 +46,14 @@ public class OverlaySurface extends SurfaceView implements SurfaceHolder.Callbac
         init();
     }
 
-
     private void init() {
 
         running = true;
         canvas = null;
         random = new Random();
         thread = null;
+
+        spriteManager = new SpriteManager();
 
         surfaceHolder = this.getHolder();
         bmp = BitmapFactory.decodeResource(getResources(), R.drawable.dot);
@@ -71,6 +75,10 @@ public class OverlaySurface extends SurfaceView implements SurfaceHolder.Callbac
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        for (int i = 0; i < 200; i++) {
+            spriteManager.addSprite("Car-" + i, new Sprite(getResources(), R.drawable.dot));
+            spriteManager.getSprite("Car-" + i).setPosition(random.nextInt(getWidth()), random.nextInt(getHeight()));
+        }
         running = true;
         thread = new Thread(this);
         thread.start();
@@ -106,8 +114,10 @@ public class OverlaySurface extends SurfaceView implements SurfaceHolder.Callbac
                 canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
                 for (int i = 0; i < 200; i++) {
-                    canvas.drawBitmap(bmp, random.nextInt(getWidth()), random.nextInt(getHeight()), null);
+                    spriteManager.getSprite("Car-" + i).setPosition(random.nextInt(getWidth()), random.nextInt(getHeight()));
                 }
+
+                spriteManager.drawAll(canvas);
 
                 surfaceHolder.unlockCanvasAndPost(canvas);
             }
