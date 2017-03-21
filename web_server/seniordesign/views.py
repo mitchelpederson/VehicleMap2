@@ -1,4 +1,5 @@
 from time import time
+import csv
 
 from django.http import HttpResponse, JsonResponse
 import django.core.serializers as serializers
@@ -46,4 +47,9 @@ def update_pos(req):
     user_car.bearing = req.POST.get('bearing', None) or user_car.bearing
     user_car.last_update = time()
     user_car.save()
+
+    with open('out.log', 'a') as f:
+        writer = csv.writer(f, delimiter=',')
+        writer.writerow([user_car.given_id, user_car.lat, user_car.long, user_car.speed, user_car.bearing])
+
     return JsonResponse(model_to_dict(user_car))
