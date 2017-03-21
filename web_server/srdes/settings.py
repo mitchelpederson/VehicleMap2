@@ -4,7 +4,9 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'cv28hfdxn@j=g4(6wt!im6*c511!cisr+xaahe@rnq8zputls4'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'conradhappeliv.com'
+]
 
 # Application definition
 INSTALLED_APPS = [

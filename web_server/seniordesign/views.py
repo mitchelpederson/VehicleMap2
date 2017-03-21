@@ -8,10 +8,23 @@ from seniordesign.models import Car
 
 
 def get_all(req):
+    threshold = 30*60 # seconds
     id = req.GET.get('given_id', None)
+
+    data = None
     if id:
-        Car.objects.update_or_create(given_id=id, defaults={'last_request': time()})
-    data = [model_to_dict(item) for item in list(Car.objects.all())]
+	try:
+            car = Car.objects.get(given_id=id)
+	    data = [model_to_dict(item) for item in list(Car.objects.filter(last_update__gt=max(time()-threshold, car.last_request)))]
+	    car.last_request = time()
+	except Car.DoesNotExist:
+	    car = {'last_request': time(), 'given_id': id}
+	    car = Car(**car)
+	car.save()
+
+    if data is None:
+	data = [model_to_dict(item) for item in list(Car.objects.filter(last_update__gt=time()-threshold))]
+
     return JsonResponse(data, safe=False)
 
 
