@@ -58,7 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1.f, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 300, .005f, this);
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (location != null) {
                 Car self = new Car(android_id, location.getLatitude(), location.getLongitude(), location.getSpeed(), location.getBearing());
@@ -134,6 +134,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    private void clearOldCars() {
+        ArrayList<Car> cars = carDatabase.getAllCars();
+        long curTime = System.currentTimeMillis() / 1000L;
+        for(Car car: cars) {
+            if(car.last_update < curTime - 5*60) { // delete after 5 minutes
+                otherCarDots.get(car.id).remove();
+                otherCarDots.remove(car.id);
+            }
+        }
+    }
+
     private final class CarGetter extends AsyncTask<Void, Void, Void> {
         private String TAG = "MapsActivity>CarGetter";
         private String url = "http://conradhappeliv.com:1337/getall";
@@ -174,6 +185,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Log.d(TAG, "Ending CarGetter");
             super.onPostExecute(res);
             redrawMapMarkers();
+            clearOldCars();
             new java.util.Timer().schedule(
                     new java.util.TimerTask() {
                         @Override
@@ -181,7 +193,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             new CarGetter().execute();
                         }
                     },
-                    1000
+                    500
             );
         }
     }

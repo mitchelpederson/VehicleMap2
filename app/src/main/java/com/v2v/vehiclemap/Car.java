@@ -4,19 +4,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public final class Car {
-    public String id;
-    public double lat;
-    public double lon;
-    public double speed;
-    public double bearing;
+    public String id = "";
+    public double lat = 0;
+    public double lon = 0;
+    public double speed = 0;
+    public double bearing = 0;
+    public double last_update = 0;
 
-    public Car() {
-        this.id = "";
-        this.lat = 0;
-        this.lon = 0;
-        this.speed = 0;
-        this.bearing = 0;
-    }
+    public Car() {}
 
     public Car(String id, double l1, double l2, double s, double b) {
         this.id = id;
@@ -32,5 +27,6 @@ public final class Car {
         this.lon = obj.getDouble("long");
         this.speed = obj.getDouble("speed");
         this.bearing = obj.getDouble("bearing");
+        this.last_update = obj.getDouble("last_update");
     }
 }

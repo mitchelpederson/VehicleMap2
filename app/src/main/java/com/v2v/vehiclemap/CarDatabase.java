@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 public final class CarDatabase extends SQLiteOpenHelper {
-    public static final int DB_VERS = 2;
+    public static final int DB_VERS = 3;
     public static final String DB_NAME = "CarDB";
     private static CarDatabase sInstance = null;
 
@@ -24,7 +24,7 @@ public final class CarDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE cars (id TEXT PRIMARY KEY, lat REAL, lon REAL, speed REAL, bearing REAL)");
+        db.execSQL("CREATE TABLE cars (id TEXT PRIMARY KEY, lat REAL, lon REAL, speed REAL, bearing REAL, last_update REAL)");
     }
 
     @Override
@@ -41,6 +41,7 @@ public final class CarDatabase extends SQLiteOpenHelper {
         vals.put("lon", c.lon);
         vals.put("speed", c.speed);
         vals.put("bearing", c.bearing);
+        vals.put("last_update", c.last_update);
 
         int id = (int) db.insertWithOnConflict("cars", null, vals, SQLiteDatabase.CONFLICT_IGNORE);
         if(id == -1) db.update("cars", vals, "id=?", new String[] {c.id});
@@ -59,6 +60,7 @@ public final class CarDatabase extends SQLiteOpenHelper {
                 car.lon = cursor.getDouble(2);
                 car.speed = cursor.getDouble(3);
                 car.bearing = cursor.getDouble(4);
+                car.last_update = cursor.getDouble(5);
                 res.add(car);
             } while(cursor.moveToNext());
         }
