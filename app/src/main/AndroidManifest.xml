@@ -11,7 +11,6 @@
     <permission      android:name="com.v2v.vehiclemap.permission.C2D_MESSAGE"           android:protectionLevel="signature" />
     <permission      android:name="com.v2v.vehiclemap.permission.ACCESS_FINE_LOCATION"  android:protectionLevel="signature" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -21,7 +20,10 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="com.v2v.vehiclemap.permission.MAPS_RECEIVE"/>
     <uses-permission android:name="com.v2v.vehiclemap.permission.C2D_MESSAGE" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -44,15 +46,21 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity android:name=".PermissionsActiviy">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
     </application>
 
 </manifest>

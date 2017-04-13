@@ -13,28 +13,23 @@ public class PermissionsActiviy extends runtimePermissions{
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);  //MUST CHANGE
+        setContentView(R.layout.activity_permissions);
 
-        requestAppPermissions(new String[] {
-                                            Manifest.permission.READ_CONTACTS,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                            Manifest.permission.WRITE_CONTACTS,
-//                                            Manifest.permission.MAPS_RECEIVE,
-//                                            Manifest.permission.C2D_MESSAGE,
-                                            Manifest.permission.ACCESS_FINE_LOCATION,
-                                            Manifest.permission.INTERNET,
-                                            Manifest.permission.ACCESS_NETWORK_STATE,
-                                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                            Manifest.permission.GET_ACCOUNTS,
-                                            Manifest.permission.WAKE_LOCK,
-//                                            Manifest.permission.READ_GSERVICES,
-//                                            Manifest.permission.RECEIVE,
-//                                            Manifest.permission.MAPS_RECEIVE,
-//                                            Manifest.permission.RECEIVE,
-//                                            Manifest.permission.C2D_MESSAGE,
-//                                            Manifest.permission.RECEIVE,
-                                            Manifest.permission.ACCESS_FINE_LOCATION},
-                                            R.string.msg,REQUEST_PERMISSION);
+        requestAppPermissions(new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.GET_ACCOUNTS,
+                Manifest.permission.WAKE_LOCK,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            },
+            R.string.msg,REQUEST_PERMISSION
+        );
+
     }
 
     @Override

@@ -23,6 +23,7 @@ public abstract class runtimePermissions extends Activity {
     protected void onCreate(Bundle savedInstanceState){
 
         super.onCreate(savedInstanceState);
+        mErrorString = new SparseIntArray();
     }
 
     public abstract void onPermissionGranted(int requestCode);
@@ -33,7 +34,6 @@ public abstract class runtimePermissions extends Activity {
         int permissionCheck = PackageManager.PERMISSION_GRANTED;
         boolean showRequestPermissions = false;
         for(String permission: requestedPermissions){
-
             permissionCheck = permissionCheck + ContextCompat.checkSelfPermission(this, permission);
             showRequestPermissions = showRequestPermissions || ActivityCompat.shouldShowRequestPermissionRationale(this, permission);
 
@@ -58,7 +58,7 @@ public abstract class runtimePermissions extends Activity {
         }
     }
 
-    public void onRequestPermissionResult(int requestCode, String [] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String [] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         int permissionCheck = PackageManager.PERMISSION_GRANTED;
         for (int permission : grantResults) {
